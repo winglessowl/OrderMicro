@@ -1,6 +1,7 @@
 ﻿using AccountMicro.BusMessage;
 using AccountMicro.Events;
 using AccountMicro.Services;
+using Domain.AccountMicroDomain.Models;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -66,7 +67,7 @@ namespace OrderMicro.BusMessage
                 bool aproved = false;
                 using (var scope = _service.CreateScope())
                 {
-                    var accountContext = scope.ServiceProvider.GetRequiredService<AccountMicro.Models.AccountContext>();
+                    var accountContext = scope.ServiceProvider.GetRequiredService<AccountContext>();
                     var OrderAcceptServices = new OrderAcceptService(accountContext);
                   aproved =  OrderAcceptServices.RecieveOrder(orderPlacedEvent);
                 }

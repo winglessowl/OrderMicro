@@ -1,5 +1,5 @@
 ﻿using AccountMicro.Events;
-using AccountMicro.Models;
+using Domain.AccountMicroDomain.Models;
 
 namespace AccountMicro.Services
 {

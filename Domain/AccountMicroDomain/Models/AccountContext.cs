@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace AccountMicro.Models
+﻿
+using Microsoft.EntityFrameworkCore;
+namespace Domain.AccountMicroDomain.Models
 {
     public class AccountContext : DbContext
     {

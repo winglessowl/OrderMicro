@@ -1,4 +1,7 @@
-﻿using AccountMicro.Models;
+﻿using AccountMicro.Accounting.Commands;
+using AccountMicro.Accounting.Querys;
+using Domain.AccountMicroDomain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -8,23 +11,30 @@ namespace AccountMicro.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private AccountContext _context;
-        public AccountController(AccountContext context) 
+        private readonly ISender _mediatr;
+        public AccountController(ISender mediatr)
         {
-            _context = context;
+            _mediatr = mediatr;
         }
-        [HttpPost(Name = "CreateAccount")]
-        public Account Create()
+        [HttpPost("~/CreateAccount")]
+        public async Task<Unit> Create(string name, int Funds)
         {
-            _context.Accounts.Add(new Account() { Funds = 999, Name = "Cuenta 1" });
-            _context.SaveChanges();
-            return new Account();
+            var command = new CreateAccountCommand(name, Funds);
+            return await _mediatr.Send(command);
         }
 
-        [HttpGet(Name = "GetAccount")]
-        public string GetAccount(int idAccount) 
+        [HttpGet("~/GetAccount")]
+        public async Task<Account> GetAccount(int idAccount)
         {
-            return JsonConvert.SerializeObject(_context.Accounts.Where(x => x.Id == idAccount).FirstOrDefault()); 
+            var query = new AccountQuery(idAccount);
+            return await _mediatr.Send(query);
+        }
+
+        [HttpGet("~/ListAllAccounts")]
+        public async Task<IEnumerable<Account>> ListAllAccounts()
+        {
+          var query = new AccountsQuery();
+          return await _mediatr.Send(query);
         }
     }
 }

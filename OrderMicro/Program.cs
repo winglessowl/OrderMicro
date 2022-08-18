@@ -1,3 +1,4 @@
+using AccountMicro.UnitOfWork;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderMicro.BusMessage;
@@ -17,7 +18,8 @@ builder.Services.AddDbContext<OrderMicro.Model.OrderContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IMessageBusClient, MessageBusPublisher>();
+builder.Services.AddSingleton<IUnityOfWork, AccountUnitOfWork>();
+//builder.Services.AddSingleton<IMessageBusClient, MessageBusPublisher>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope()) 
